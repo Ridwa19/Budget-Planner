@@ -1,26 +1,30 @@
+// src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import Transactions from './components/Transactions';
-import BudgetManagement from './components/BudgetManagement';
+import Budget from './components/Budget';
 import Reports from './components/Reports';
 import Settings from './components/Settings';
+import Home from './pages/Home';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Header />
-      <div className="bg-gray-100 min-h-screen pt-8">
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/budget" element={<BudgetManagement />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/" element={<Dashboard />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/transactions" element={<Transactions />} />
+        <Route path="/budget" element={<Budget />} />
+        <Route path="/reports" element={<Reports />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
     </Router>
   );
 }
