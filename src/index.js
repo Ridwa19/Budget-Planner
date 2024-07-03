@@ -1,17 +1,15 @@
-// src/index.js or src/App.js
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import './index.css';
 import App from './App';
 import { TransactionProvider } from './context/TransactionContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <TransactionProvider>
-        <App />
-      </TransactionProvider>
-    </Router>
+    <TransactionProvider>
+      <App />
+    </TransactionProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

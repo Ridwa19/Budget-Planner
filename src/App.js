@@ -1,32 +1,41 @@
-// src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Dashboard from './components/Dashboard';
-import Transactions from './components/Transactions';
-import Budget from './components/Budget';
-import Reports from './components/Reports';
-import Settings from './components/Settings';
-import Home from './pages/Home';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import SignUp from './Pages/SignUp';
+import SignIn from './Pages/SignIn';
+import AddBudgetForm from './components/AddBudgetForm';
+import BudgetList from './components/BudgetList';
+import AddTransactionForm from './components/AddTransactionForm';
+import TransactionList from './components/TransactionList';
+import Navbar from './components/Navbar';
 
 const App = () => {
-  return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/transactions" element={<Transactions />} />
-        <Route path="/budget" element={<Budget />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
-    </Router>
-  );
-}
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const login = () => setIsAuthenticated(true);
+    const logout = () => setIsAuthenticated(false);
+
+    return (
+        <Router>
+            <Navbar isAuthenticated={isAuthenticated} logout={logout} />
+            <Routes>
+                <Route path="/signin" element={<SignIn onSignIn={login} />} />
+                <Route path="/signup" element={<SignUp onSignUp={login} />} />
+                
+                {isAuthenticated ? (
+                    <>
+                        <Route path="/budgets" element={<BudgetList />} />
+                        <Route path="/add-budget" element={<AddBudgetForm />} />
+                        <Route path="/add-transaction/:budgetId" element={<AddTransactionForm />} />
+                        <Route path="/transactions/:budgetId" element={<TransactionList />} />
+                        <Route path="/" element={<Navigate to="/budgets" />} />
+                    </>
+                ) : (
+                    <Route path="/" element={<Navigate to="/signin" />} />
+                )}
+                <Route path="*" element={<Navigate to={isAuthenticated ? "/budgets" : "/signin"} />} />
+            </Routes>
+        </Router>
+    );
+};
 
 export default App;

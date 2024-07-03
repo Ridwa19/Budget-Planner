@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const AddTransactionForm = ({ budgetId }) => {
-    const [amount, setAmount] = useState('');
+const AddBudgetForm = () => {
+    const [name, setName] = useState('');
+    const [totalAmount, setTotalAmount] = useState('');
     const [description, setDescription] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/transactions', {
-                budgetId,
-                amount,
+            const response = await axios.post('http://localhost:5000/api/budgets', {
+                name,
+                totalAmount,
                 description
             }, {
                 headers: {
@@ -18,22 +19,28 @@ const AddTransactionForm = ({ budgetId }) => {
                 }
             });
             console.log(response.data);
-            // Handle successful transaction creation, e.g., refresh transaction list
+            // Handle successful budget creation, e.g., refresh budget list
         } catch (error) {
             console.error(error.response.data);
-            // Handle transaction creation error
+            // Handle budget creation error
         }
     };
 
     return (
         <div>
-            <h2>Add Transaction</h2>
+            <h2>Add Budget</h2>
             <form onSubmit={handleSubmit}>
                 <input
+                    type="text"
+                    placeholder="Budget Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <input
                     type="number"
-                    placeholder="Amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="Total Amount"
+                    value={totalAmount}
+                    onChange={(e) => setTotalAmount(e.target.value)}
                 />
                 <input
                     type="text"
@@ -41,10 +48,10 @@ const AddTransactionForm = ({ budgetId }) => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
-                <button type="submit">Add Transaction</button>
+                <button type="submit">Add Budget</button>
             </form>
         </div>
     );
 };
 
-export default AddTransactionForm;
+export default AddBudgetForm;
