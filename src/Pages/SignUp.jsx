@@ -44,6 +44,7 @@ const SignUp = () => {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete='email'
           />
         </div>
         <div className="flex items-center border-2 border-gray-300 rounded-md p-2 transition duration-300 hover:border-blue-500">

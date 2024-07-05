@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useState, useEffect } from 'react';
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
-import useCurrentUser from "../Hooks/useCurrentUser";
 import { useNavigate, Link } from 'react-router-dom';
 import { AiOutlineUser, AiOutlineLock, AiOutlineArrowRight } from 'react-icons/ai';
 import { toast } from 'react-toastify';
@@ -13,22 +12,21 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Handle user already logged in
-  const handleLoggedInUser = () => {
-    toast.warning("You are already signed in. Please sign out to access this page.");
-    navigate("/");
-  }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // toast.warning("");//You are already signed in. Redirecting to Dashboard.
+        navigate("/dashboard");
+      }
+    });
 
-  // Check if user is already logged in
-  const currentUser = useCurrentUser();
-  if(currentUser) {
-    handleLoggedInUser();
-  }
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(!email || !password) return;
+    if (!email || !password) return;
 
     setLoading(true);
     try {
@@ -38,8 +36,6 @@ const SignIn = () => {
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setEmail("");
-      setPassword("");
       setLoading(false);
     }
   };
@@ -56,6 +52,7 @@ const SignIn = () => {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete='email'
           />
         </div>
         <div className="flex items-center border-2 border-gray-300 rounded-md p-2 transition duration-300 hover:border-blue-500">
@@ -66,6 +63,7 @@ const SignIn = () => {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete='current-password'
           />
         </div>
         <button

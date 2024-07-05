@@ -1,20 +1,21 @@
-import React from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-const NavItem = ({ itemText, itemPath }) => {
-   const location = useLocation()
-   const isActive = location.pathname === itemPath;
+const NavItem = ({ to, children, onClick }) => {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+
   return (
-    <NavLink to={itemPath}>
-      <li
-        className={`mx-2 ${
-          isActive ? "bg-black text-white" : "bg-gray-300"
-        }  px-2 hover:bg-gray-400 cursor-pointer rounded-md`}
-      >
-        {itemText}
-      </li>
-    </NavLink>
+    <Link
+      to={to}
+      onClick={onClick}
+      className={`p-2 rounded-md hover:bg-gray-300 transition duration-300 ${
+        isActive ? 'bg-gray-300 font-bold' : ''
+      }`}
+    >
+      {children}
+    </Link>
   );
-}
+};
 
-export default NavItem
+export default NavItem;
