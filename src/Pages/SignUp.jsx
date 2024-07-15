@@ -12,16 +12,19 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
+    // Validate email and password
     if (!email || !password) {
       setLoading(false);
       return;
     }
 
     try {
+      // Create user with email and password
       await createUserWithEmailAndPassword(auth, email, password);
       toast.success("User created successfully");
       navigate("/");
@@ -34,8 +37,9 @@ const SignUp = () => {
 
   return (
     <div className="flex justify-center">
-      <form className="flex flex-col w-full max-w-sm mt-4 gap-4 p-4 bg-gray-100 rounded-lg shadow-md" onSubmit={handleSubmit}>
+      <form className="flex flex-col w-full max-w-sm mt-20 gap-4 p-4 bg-gray-100 rounded-lg shadow-md" onSubmit={handleSubmit}>
         <h1 className="text-3xl font-bold text-center mb-4">Register</h1>
+        {/* Email input field */}
         <div className="flex items-center border-2 border-gray-300 rounded-md p-2 transition duration-300 hover:border-blue-500">
           <AiOutlineUser className="text-lg text-gray-500 mr-2" />
           <input
@@ -47,6 +51,7 @@ const SignUp = () => {
             autoComplete='email'
           />
         </div>
+        {/* Password input field */}
         <div className="flex items-center border-2 border-gray-300 rounded-md p-2 transition duration-300 hover:border-blue-500">
           <AiOutlineLock className="text-lg text-gray-500 mr-2" />
           <input
@@ -57,12 +62,14 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        {/* Submit button */}
         <button
           type="submit"
           className="flex items-center justify-center bg-blue-500 text-white p-3 rounded-md mt-4 hover:bg-blue-600 transition duration-300"
         >
           {loading ? <Loader /> : <><span>Sign Up</span> <AiOutlineArrowRight className="text-lg ml-2" /></>}
         </button>
+        {/* Link to sign in */}
         <p className="text-center text-gray-600 mt-2">
           Already have an account? <Link to="/signin" className="text-blue-500 hover:underline">Login now</Link>
         </p>
