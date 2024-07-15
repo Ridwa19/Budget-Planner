@@ -109,12 +109,10 @@ const Navbar = () => {
           {/* Sidebar navigation links */}
           <nav className="flex flex-col mt-4 space-y-4">
             <NavItem to="/dashboard" onClick={toggleSidebar}>Dashboard</NavItem>
-            <NavItem to="/budget-management" onClick={toggleSidebar}>Budget Management</NavItem>
-            <NavItem to="/add-budget" onClick={() => { navigate('/add-budget'); toggleSidebar(); }}>Add Budget</NavItem>
+            <NavItem to="/budget-management" onClick={toggleSidebar}>Add Budget</NavItem>
+            <NavItem to="/add-budget" onClick={() => { navigate('/add-budget'); toggleSidebar(); }}>Manage Budgets</NavItem>
             <NavItem to="/add-transaction/:budgetId" onClick={toggleSidebar}>Add Transaction</NavItem>
-            <NavItem to="/transactions/:budgetId" onClick={toggleSidebar}>Transactions</NavItem>
-            <NavItem to="/profile" onClick={toggleSidebar}>Profile</NavItem>
-            <NavItem to="/settings" onClick={toggleSidebar}>Settings</NavItem>
+            <NavItem to="/transactions/:budgetId" onClick={toggleSidebar}>ManageTransactions</NavItem>
           </nav>
         </div>
       )}
