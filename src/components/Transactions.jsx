@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const ManageTransactions = () => {
   const { transactions, deleteTransaction, editTransaction } = useContext(TransactionContext);
-  const [editMode, setEditMode] = useState(false);
+
   const [editTransactionData, setEditTransactionData] = useState({
     id: '',
     category: '',
@@ -20,8 +20,14 @@ const ManageTransactions = () => {
   };
 
   const handleEdit = (transaction) => {
-    setEditMode(true);
-    setEditTransactionData(transaction);
+    setEditTransactionData({
+      id: transaction.id,
+      category: transaction.category,
+      amount: transaction.amount,
+      type: transaction.type,
+      date: new Date(transaction.date),
+      description: transaction.description
+    });
   };
 
   const handleChange = (e) => {
@@ -41,11 +47,6 @@ const ManageTransactions = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     editTransaction(editTransactionData);
-    setEditMode(false);
-    resetForm();
-  };
-
-  const resetForm = () => {
     setEditTransactionData({
       id: '',
       category: '',
@@ -57,12 +58,12 @@ const ManageTransactions = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 mt-20">
       <h2 className="text-3xl font-bold text-center mb-4">Manage Transactions</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {transactions.map(transaction => (
           <div key={transaction.id} className="bg-white rounded-lg shadow-md p-6">
-            {editMode && editTransactionData.id === transaction.id ? (
+            {editTransactionData.id === transaction.id ? (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="flex flex-col space-y-4">
                   <div>
@@ -123,32 +124,40 @@ const ManageTransactions = () => {
                   <button
                     type="button"
                     className="inline-block bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50"
-                    onClick={() => setEditMode(false)}
+                    onClick={() => setEditTransactionData({
+                      id: '',
+                      category: '',
+                      amount: '',
+                      type: 'expense',
+                      date: new Date(),
+                      description: ''
+                    })}
                   >
                     Cancel
                   </button>
                 </div>
               </form>
             ) : (
-              <div className="flex flex-col space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">{transaction.category}</h3>
-                  <p className="text-xl font-bold text-gray-800">${transaction.amount}</p>
-                  <p className="text-sm text-gray-500">Date: {transaction.date.toDateString()}</p>
-                  <p className="text-sm text-gray-500">Description: {transaction.description}</p>
-                </div>
-                <div className="flex justify-end">
+              <div>
+                <p><strong>Category:</strong> {transaction.category}</p>
+                <p><strong>Amount:</strong> {transaction.amount}</p>
+                <p><strong>Type:</strong> {transaction.type}</p>
+                <p><strong>Date:</strong> {transaction.date.toISOString().substr(0, 10)}</p>
+                {transaction.description && <p><strong>Description:</strong> {transaction.description}</p>}
+                <div className="mt-4">
                   <button
-                    className="text-sm text-red-600 hover:text-red-700 mr-2"
-                    onClick={() => handleDelete(transaction.id)}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="text-sm text-blue-600 hover:text-blue-700"
+                    type="button"
+                    className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 mr-2"
                     onClick={() => handleEdit(transaction)}
                   >
                     Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                    onClick={() => handleDelete(transaction.id)}
+                  >
+                    Delete
                   </button>
                 </div>
               </div>

@@ -40,7 +40,7 @@ const ManageBudgets = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 mt-20">
       <h2 className="text-3xl font-bold mb-4">Manage Budgets</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {budgets.map(budget => (

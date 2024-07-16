@@ -2,46 +2,51 @@ import React, { useContext, useState, useEffect } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 
 const Dashboard = () => {
-  // Destructure transactions and budgets from TransactionContext
   const { transactions, budgets } = useContext(TransactionContext);
 
-  // Define state variables for income, expenses, remaining balance, budgeted amount, and spent amount
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [remainingBalance, setRemainingBalance] = useState(0);
   const [totalBudgeted, setTotalBudgeted] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
 
-  // useEffect to calculate totals based on transactions and budgets
   useEffect(() => {
-    // Calculate total income
-    const income = transactions
-      .filter(transaction => transaction.type === 'income')
-      .reduce((acc, transaction) => acc + parseFloat(transaction.amount), 0);
-    
-    // Calculate total expenses
-    const expenses = transactions
-      .filter(transaction => transaction.type === 'expense')
-      .reduce((acc, transaction) => acc + parseFloat(transaction.amount), 0);
+    const calculateTotals = () => {
+      // Calculate total income
+      const income = transactions
+        .filter(transaction => transaction.type === 'income')
+        .reduce((acc, transaction) => acc + parseFloat(transaction.amount), 0);
 
-    // Update state with calculated values
-    setTotalIncome(income);
-    setTotalExpenses(expenses);
-    setRemainingBalance(income - expenses);
+      // Calculate total expenses
+      const expenses = transactions
+        .filter(transaction => transaction.type === 'expense')
+        .reduce((acc, transaction) => acc + parseFloat(transaction.amount), 0);
 
-    // Calculate total budgeted and total spent
-    const budgeted = budgets.reduce((acc, budget) => acc + parseFloat(budget.allocated), 0);
-    const spent = budgets.reduce((acc, budget) => acc + parseFloat(budget.spent), 0);
+      // Update state with calculated values
+      setTotalIncome(income);
+      setTotalExpenses(expenses);
+      setRemainingBalance(income - expenses);
+    };
 
-    // Update state with calculated values
-    setTotalBudgeted(budgeted);
-    setTotalSpent(spent);
+    const calculateBudgets = () => {
+      // Calculate total budgeted and total spent
+      const budgeted = budgets.reduce((acc, budget) => acc + parseFloat(budget.allocated), 0);
+      const spent = budgets.reduce((acc, budget) => acc + parseFloat(budget.spent), 0);
+
+      // Update state with calculated values
+      setTotalBudgeted(budgeted);
+      setTotalSpent(spent);
+    };
+
+    calculateTotals();
+    calculateBudgets();
   }, [transactions, budgets]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white-100 px-2 py-8">
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Dashboard</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+        {/* Transaction Summary */}
         <div className="bg-gray-50 rounded-lg shadow-md p-6 flex flex-col items-center">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Transaction Summary</h3>
           <div className="w-full">
@@ -59,6 +64,8 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* Budget Summary */}
         <div className="bg-gray-50 rounded-lg shadow-md p-6 flex flex-col items-center">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Budget Summary</h3>
           <div className="w-full">
