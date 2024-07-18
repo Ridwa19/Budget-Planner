@@ -63,3 +63,6 @@ To run this project locally, follow these steps:
 ### Manage Transactions
 ![Manage Transactions](./screenshots/managetransactions.PNG)
 *Interface for updating and deleting transactions.*
+##menu icon
+![menu icon](./screenshots/Menu.PNG)
+*interface for showing some app functionlities*
