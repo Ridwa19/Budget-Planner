@@ -1,22 +1,59 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 import useFormState from '../Hooks/useFormState'; 
 
 const AddTransactionForm = () => {
   const { addTransaction } = useContext(TransactionContext);
   const { transaction, handleChange, resetTransaction } = useFormState();
+  const [customDate, setCustomDate] = useState('');
+  const [error, setError] = useState('');
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTransaction(transaction); // Call addTransaction function from context
-    resetTransaction(); // Reset form fields
+
+    // Validate custom date format
+    if (!isValidDate(customDate)) {
+      setError('Please enter a valid date (MM/DD/YYYY)');
+      return;
+    }
+
+    // Parse custom date format to Date object
+    const parts = customDate.split('/');
+    const year = parseInt(parts[2], 10);
+    const month = parseInt(parts[0], 10) - 1; // Month is zero-indexed
+    const day = parseInt(parts[1], 10);
+    const date = new Date(year, month, day);
+
+    // Prepare transaction object with parsed date
+    const transactionToAdd = {
+      ...transaction,
+      date: date.toISOString() // Convert date to ISO string for Firebase compatibility
+    };
+
+    // Add transaction and handle errors
+    addTransaction(transactionToAdd)
+      .then(() => {
+        resetForm();
+        setError('');
+      })
+      .catch((error) => {
+        console.error('Error adding transaction:', error);
+        setError('Failed to add transaction. Please try again.');
+      });
   };
 
-  // Ensure transaction.date is properly initialized as a Date object
-  if (!(transaction.date instanceof Date)) {
-    transaction.date = new Date(); // Initialize with current date if not already a Date object
-  }
+  // Function to validate custom date format
+  const isValidDate = (dateString) => {
+    const regex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    return regex.test(dateString);
+  };
+
+  // Function to reset form fields and custom date input
+  const resetForm = () => {
+    resetTransaction();
+    setCustomDate('');
+  };
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100 mt-8">
@@ -64,18 +101,23 @@ const AddTransactionForm = () => {
               required
             />
           </div>
-          {/* Transaction Date */}
+          {/* Custom Date Input */}
           <div className="mb-4">
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+            <label htmlFor="customDate" className="block text-sm font-medium text-gray-700 mb-1">Date (MM/DD/YYYY)</label>
             <input
-              type="date"
-              id="date"
-              name="date"
-              value={transaction.date.toISOString().substr(0, 10)} // Ensure transaction.date is a Date object
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:outline-none sm:text-sm"
+              type="text"
+              id="customDate"
+              name="customDate"
+              value={customDate}
+              onChange={(e) => {
+                setCustomDate(e.target.value);
+                setError('');
+              }}
+              className={`w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:outline-none sm:text-sm ${error ? 'border-red-500' : ''}`}
+              placeholder="1/1/2022"
               required
             />
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
           {/* Transaction Description */}
           <div className="mb-4">

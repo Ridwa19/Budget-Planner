@@ -43,11 +43,11 @@ const Dashboard = () => {
   }, [transactions, budgets]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white-100 px-2 py-8">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-2 py-8">
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Dashboard</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
         {/* Transaction Summary */}
-        <div className="bg-gray-50 rounded-lg shadow-md p-6 flex flex-col items-center">
+        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Transaction Summary</h3>
           <div className="w-full">
             <div className="flex justify-between items-center mb-4">
@@ -66,7 +66,7 @@ const Dashboard = () => {
         </div>
 
         {/* Budget Summary */}
-        <div className="bg-gray-50 rounded-lg shadow-md p-6 flex flex-col items-center">
+        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Budget Summary</h3>
           <div className="w-full">
             <div className="flex justify-between items-center mb-4">

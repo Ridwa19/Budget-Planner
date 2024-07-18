@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const ManageTransactions = () => {
-  const { transactions, deleteTransaction, editTransaction } = useContext(TransactionContext);
+  const { transactions, addTransaction, deleteTransaction, editTransaction } = useContext(TransactionContext);
 
   const [editTransactionData, setEditTransactionData] = useState({
     id: '',
@@ -20,13 +20,22 @@ const ManageTransactions = () => {
   };
 
   const handleEdit = (transaction) => {
+    let date = transaction.date;
+
+    // Check if transaction.date is a Firestore Timestamp
+    if (date && typeof date.toDate === 'function') {
+      date = date.toDate(); // Convert Firestore Timestamp to Date object
+    } else if (!(date instanceof Date)) {
+      date = new Date(); // Default to current date if not already a Date object
+    }
+
     setEditTransactionData({
       id: transaction.id,
-      category: transaction.category,
-      amount: transaction.amount,
-      type: transaction.type,
-      date: new Date(transaction.date),
-      description: transaction.description
+      category: transaction.category || '',
+      amount: transaction.amount || '',
+      type: transaction.type || 'expense',
+      date: date,
+      description: transaction.description || ''
     });
   };
 
@@ -142,7 +151,7 @@ const ManageTransactions = () => {
                 <p><strong>Category:</strong> {transaction.category}</p>
                 <p><strong>Amount:</strong> {transaction.amount}</p>
                 <p><strong>Type:</strong> {transaction.type}</p>
-                <p><strong>Date:</strong> {transaction.date.toISOString().substr(0, 10)}</p>
+                <p><strong>Date:</strong> {transaction.date instanceof Date ? transaction.date.toISOString().substr(0, 10) : ''}</p>
                 {transaction.description && <p><strong>Description:</strong> {transaction.description}</p>}
                 <div className="mt-4">
                   <button

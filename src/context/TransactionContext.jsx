@@ -1,4 +1,6 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import { db } from '../firebaseConfig';
+import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
 
 export const TransactionContext = createContext();
 
@@ -6,111 +8,83 @@ const TransactionProvider = ({ children }) => {
   const [transactions, setTransactions] = useState([]);
   const [budgets, setBudgets] = useState([]);
 
-  // Function to find a budget by category
-  const findBudgetByCategory = (category) => budgets.find(budget => budget.category === category);
+  useEffect(() => {
+    const fetchBudgets = async () => {
+      const budgetCollection = collection(db, 'budgets');
+      const budgetSnapshot = await getDocs(budgetCollection);
+      const budgetList = budgetSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setBudgets(budgetList);
+    };
 
-  // Function to add a new transaction
-  const addTransaction = (newTransaction) => {
+    const fetchTransactions = async () => {
+      const transactionCollection = collection(db, 'transactions');
+      const transactionSnapshot = await getDocs(transactionCollection);
+      const transactionList = transactionSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setTransactions(transactionList);
+    };
+
+    fetchBudgets();
+    fetchTransactions();
+  }, []);
+
+  const addTransaction = async (newTransaction) => {
     try {
-      setTransactions([...transactions, newTransaction]);
-
-      // Update associated budget if exists
-      const budgetToUpdate = findBudgetByCategory(newTransaction.category);
+      const docRef = await addDoc(collection(db, 'transactions'), newTransaction);
+      setTransactions([...transactions, { id: docRef.id, ...newTransaction }]);
+      // Update associated budget
+      const budgetToUpdate = budgets.find(budget => budget.category === newTransaction.category);
       if (budgetToUpdate) {
-        const updatedBudget = {
-          ...budgetToUpdate,
-          spent: budgetToUpdate.spent + (newTransaction.type === 'expense' ? newTransaction.amount : 0),
-        };
-        editBudget(updatedBudget);
+        const updatedSpent = budgetToUpdate.spent + newTransaction.amount;
+        await updateDoc(doc(db, 'budgets', budgetToUpdate.id), { spent: updatedSpent });
+        setBudgets(budgets.map(budget => budget.id === budgetToUpdate.id ? { ...budget, spent: updatedSpent } : budget));
       }
     } catch (error) {
       console.error('Error adding transaction:', error);
-      // Handle error as needed (e.g., notify user)
     }
   };
 
-  // Function to edit an existing transaction
-  const editTransaction = (updatedTransaction) => {
+  const editTransaction = async (updatedTransaction) => {
     try {
-      setTransactions(prevTransactions =>
-        prevTransactions.map(transaction =>
-          transaction.id === updatedTransaction.id ? updatedTransaction : transaction
-        )
-      );
-
-      // Update associated budget if exists
-      const budgetToUpdate = findBudgetByCategory(updatedTransaction.category);
-      if (budgetToUpdate) {
-        const updatedBudget = {
-          ...budgetToUpdate,
-          spent: budgetToUpdate.spent + (updatedTransaction.type === 'expense' ? updatedTransaction.amount : 0),
-        };
-        editBudget(updatedBudget);
-      }
+      await updateDoc(doc(db, 'transactions', updatedTransaction.id), updatedTransaction);
+      setTransactions(transactions.map(transaction => transaction.id === updatedTransaction.id ? updatedTransaction : transaction));
     } catch (error) {
       console.error('Error editing transaction:', error);
-      // Handle error as needed
     }
   };
 
-  // Function to delete a transaction
-  const deleteTransaction = (id) => {
+  const deleteTransaction = async (id) => {
     try {
-      setTransactions(prevTransactions =>
-        prevTransactions.filter(transaction => transaction.id !== id)
-      );
-
-      // Update associated budget if exists
-      const transactionToDelete = transactions.find(transaction => transaction.id === id);
-      if (transactionToDelete) {
-        const budgetToUpdate = findBudgetByCategory(transactionToDelete.category);
-        if (budgetToUpdate) {
-          const updatedBudget = {
-            ...budgetToUpdate,
-            spent: budgetToUpdate.spent - (transactionToDelete.type === 'expense' ? transactionToDelete.amount : 0),
-          };
-          editBudget(updatedBudget);
-        }
-      }
+      await deleteDoc(doc(db, 'transactions', id));
+      setTransactions(transactions.filter(transaction => transaction.id !== id));
     } catch (error) {
       console.error('Error deleting transaction:', error);
-      // Handle error as needed
     }
   };
 
-  // Function to add a new budget
-  const addBudget = (newBudget) => {
+  const addBudget = async (newBudget) => {
     try {
-      setBudgets([...budgets, newBudget]);
+      const docRef = await addDoc(collection(db, 'budgets'), newBudget);
+      setBudgets([...budgets, { id: docRef.id, ...newBudget }]);
     } catch (error) {
       console.error('Error adding budget:', error);
-      // Handle error as needed
     }
   };
 
-  // Function to edit an existing budget
-  const editBudget = (updatedBudget) => {
+  const editBudget = async (updatedBudget) => {
     try {
-      setBudgets(prevBudgets =>
-        prevBudgets.map(budget =>
-          budget.id === updatedBudget.id ? updatedBudget : budget
-        )
-      );
+      await updateDoc(doc(db, 'budgets', updatedBudget.id), updatedBudget);
+      setBudgets(budgets.map(budget => budget.id === updatedBudget.id ? updatedBudget : budget));
     } catch (error) {
       console.error('Error editing budget:', error);
-      // Handle error as needed
     }
   };
 
-  // Function to delete a budget
-  const deleteBudget = (id) => {
+  const deleteBudget = async (id) => {
     try {
-      setBudgets(prevBudgets =>
-        prevBudgets.filter(budget => budget.id !== id)
-      );
+      await deleteDoc(doc(db, 'budgets', id));
+      setBudgets(budgets.filter(budget => budget.id !== id));
     } catch (error) {
       console.error('Error deleting budget:', error);
-      // Handle error as needed
     }
   };
 
