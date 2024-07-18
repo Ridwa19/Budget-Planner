@@ -66,3 +66,7 @@ To run this project locally, follow these steps:
 ##menu icon
 ![menu icon](./screenshots/Menu.PNG)
 *interface for showing some app functionlities*
+## Live Demo
+
+Check out the live demo of Budget Planner:
+[Budget Planner Live Demo](https://budget-planner-pm31xq8nn-ridwaans-projects-37ddc898.vercel.app)
