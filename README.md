@@ -42,24 +42,24 @@ To run this project locally, follow these steps:
 
 ## Project Screenshots
 ### Dashboard
-![Dashboard](./screenshots/dashboard.png)
+![Dashboard](./screenshots/Dashboard.PNG)
 *Dashboard displaying transaction and budget summaries.*
 
 ## Login
-![Login](./screenshots/login.png)
+![Login](./screenshots/singin.PNG)
 *Login page for secure access.*
 ### Register
-![Register](./screenshots/register.png)
+![Register](./screenshots/regester.PNG)
 *Register page for creating new accounts.*
 ### Add Budget
-![Add Budget](./screenshots/add_budget.png)
+![Add Budget](./screenshots/addbudget.PNG)
 *Interface for adding new budget categories.*
 ### Manage Budgets
-![Manage Budgets](./screenshots/manage_budgets.png)
+![Manage Budgets](./screenshots/managebudgets.PNG)
 *Interface for updating and deleting budgets.*
 ### Add Transaction
-![Add Transaction](./screenshots/add_transaction.png)
+![Add Transaction](./screenshots/addtransaction.PNG)
 *Interface for adding new transactions.*
 ### Manage Transactions
-![Manage Transactions](./screenshots/manage_transactions.png)
+![Manage Transactions](./screenshots/managetransactions.PNG)
 *Interface for updating and deleting transactions.*
