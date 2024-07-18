@@ -39,50 +39,14 @@ Configure Firebase credentials for authentication.
 Run the development server using npm start.
 Project Structure
 css
-Copy code
-Budget-Planner/
-├── public/
-│   ├── index.html
-│   └── ...
-├── src/
-│   ├── components/
-│   │   ├── dashboard
-│   │   │___budgetmanagment  
-│   │   │___ budgetfron
-│   │   │___loader 
-│   │   ├── Nvbar
-│   │   │__navitem
-│   │   │__Transaction managment
-│   │   │__transactionfrom
-│   │   ├___Hooks
-│   │   │_usercurrent
-│   │   │useform   
-│   │   │   
-│   │   ├── pages/
-│   │   │ _home 
-│   │   │_singin
-│   │   │_singout  
-│   │   
-│   │      
-│   │   
-│   │       
-│   ├── context
-│   │   └── TransactionContext.jsx
-│   ├── firebase/
-│   │   ├── firebase.js
-│   │   └── ...
-│   ├── App.js
-│   ├── index.js
-│   ├── README.md
-│   └── ...
-└── ...
+
+
 
 Screenshots
 
 Dashboard displaying transaction and budget summaries.
 
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
 
 Acknowledgements
 React
