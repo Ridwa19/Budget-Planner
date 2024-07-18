@@ -1,56 +1,65 @@
-Budget Planner
+# Budget Planner
+
 Budget Planner Web App using React
 
-Overview
+## Overview
 This web application serves as a budget planner, allowing users to manage their finances effectively. It provides functionalities for adding budgets, managing budgets, adding transactions, and managing transactions.
 
-Features
-Authentication
+## Features
+### Authentication
+- **Login:** Secure login functionality for registered users.
+- **Register:** New users can create accounts to access the app.
+- **Sign Out:** Allows users to securely log out of their accounts.
 
-Login: Secure login functionality for registered users.
-Register: New users can create accounts to access the app.
-Sign Out: Allows users to securely log out of their accounts.
-Dashboard
+### Dashboard
+- **Transaction Summary:** Provides an overview of transactions, categorized by type (expense or income).
+- **Budget Summary:** Displays a summary of budgets, showing allocated amounts and expenditures.
 
-Transaction Summary: Provides an overview of transactions, categorized by type (expense or income).
-Budget Summary: Displays a summary of budgets, showing allocated amounts and expenditures.
-Menu Navigation
+### Menu Navigation
+- **Left-Side Menu:** Accessible navigation menu offering seamless access to major functionalities.
 
-Left-Side Menu: Accessible navigation menu offering seamless access to major functionalities.
-Manage Budgets
+### Manage Budgets
+- **Add Budget:** Allows users to add new budget categories with allocated amounts.
+- **Update and Delete:** Enables users to modify existing budgets or remove them as needed.
 
-Add Budget: Allows users to add new budget categories with allocated amounts.
-Update and Delete: Enables users to modify existing budgets or remove them as needed.
-Manage Transactions
+### Manage Transactions
+- **Add Transaction:** Facilitates the addition of transactions, specifying category, amount, date, type (expense or income), and optional description.
+- **Update and Delete:** Provides options to edit transaction details or delete transactions.
 
-Add Transaction: Facilitates the addition of transactions, specifying category, amount, date, type (expense or income), and optional description.
-Update and Delete: Provides options to edit transaction details or delete transactions.
-Technologies Used
-Frontend: React
-Styling: Tailwind CSS
-State Management: Context API
-Authentication: Firebase Authentication
-Getting Started
+## Technologies Used
+- **Frontend:** React
+- **Styling:** Tailwind CSS
+- **State Management:** Context API
+- **Authentication:** Firebase Authentication
+
+## Getting Started
 To run this project locally, follow these steps:
 
-Clone this repository.
-Install dependencies using npm install.
-Configure Firebase credentials for authentication.
-Run the development server using npm start.
-Project Structure
-css
+1. Clone this repository.
+2. Install dependencies using `npm install`.
+3. Configure Firebase credentials for authentication.
+4. Run the development server using `npm start`.
 
+## Project Screenshots
+### Dashboard
+![Dashboard](./screenshots/dashboard.png)
+*Dashboard displaying transaction and budget summaries.*
 
-
-Screenshots
-
-Dashboard displaying transaction and budget summaries.
-
-
-
-Acknowledgements
-React
-Tailwind CSS
-Firebase
-React Icons
-DatePicker
+## Login
+![Login](./screenshots/login.png)
+*Login page for secure access.*
+### Register
+![Register](./screenshots/register.png)
+*Register page for creating new accounts.*
+### Add Budget
+![Add Budget](./screenshots/add_budget.png)
+*Interface for adding new budget categories.*
+### Manage Budgets
+![Manage Budgets](./screenshots/manage_budgets.png)
+*Interface for updating and deleting budgets.*
+### Add Transaction
+![Add Transaction](./screenshots/add_transaction.png)
+*Interface for adding new transactions.*
+### Manage Transactions
+![Manage Transactions](./screenshots/manage_transactions.png)
+*Interface for updating and deleting transactions.*
